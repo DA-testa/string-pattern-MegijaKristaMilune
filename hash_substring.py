@@ -1,55 +1,39 @@
 # python3
 # Megija Krista Miļūne, 221RDB229
 
+
 def read_input():
+    input_method = input()
 
-    izvele = input().rstrip().lower()
-    if izvele == "i":
-
+    if 'I' in input_method:
         pattern = input().rstrip()
-        text = input().rstrip()
-    else:
-        with open(input().rstrip()) as f:
-            pattern = f.readline().rstrip()
-            text = f.readline().rstrip()
-            
-    return pattern, text
+        string = input().rstrip()       
+
+    elif 'F' in input_method:
+        with open("tests/06","r") as file:
+            pattern = file.readline().rstrip()
+            string = file.readline().rstrip()
+    else: 
+        print('wrong input')
     
+    return (pattern, string)
 
 def print_occurrences(output):
-    print(" ".join(map(str, output)))
+    print(' '.join(map(str, output)))
 
 def get_occurrences(pattern, text):
-
-    p = 31
-    m = 10**9 + 9
-
-    n = len(text)
-    m_pattern = len(pattern)
-    p_power = p ** m_pattern % m
-
-    pattern_hash = 0
-    text_hash = 0
-
-    for i in range(m_pattern):
-        pattern_hash = (pattern_hash * p + ord(pattern[i])) % m
-        text_hash = (text_hash * p + ord(text[i])) % m
-
-    occurrences = []
-
-    for i in range(n - m_pattern + 1):
-        if pattern_hash == text_hash:
-            if pattern == text[i:i+m_pattern]:
-                occurrences.append(i)
-
-        if i < n - m_pattern:
-            text_hash = ((text_hash - ord(text[i]) * p_power) * p + ord(text[i+m_pattern])) % m
-
-            if text_hash < 0:
-                text_hash += m
-
-    return occurrences
-
+    pattern_len = len(pattern)
+    text_len = len(text)
+    pattern_hash = hash(pattern)
+    window_hash = hash(text[:pattern_len])
+    result = []
+    for i in range(text_len - pattern_len + 1):
+        if pattern_hash == window_hash:
+            if pattern == text[i:i+pattern_len]:
+                result.append(i)
+        if i < text_len - pattern_len:
+            window_hash = (window_hash - ord(text[i])*pow(26,pattern_len-1)) * 26 + ord(text[i+pattern_len])
+    return result
 
 if __name__ == '__main__':
     print_occurrences(get_occurrences(*read_input()))
