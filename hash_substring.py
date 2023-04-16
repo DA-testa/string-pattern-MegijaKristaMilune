@@ -5,10 +5,10 @@ def read_input():
     # as before, use capital i (input from keyboard) and capital f (input from file) to choose which input type will follow
     
     izvele = input().rstrip()
-    if izvele == 'i':
+    if izvele == "i":
         return input().rstrip(), input().rstrip()
     else:
-        with open(input()r.strip()) as f:
+        with open(input().rstrip()) as f:
             return f.readline().rstrip(), f.readline().rstrip()
 
     # after input type choice
@@ -23,7 +23,7 @@ def read_input():
 
 def print_occurrences(output):
     # this function should control output, it doesn't need any return
-    print(' '.join(map(str, output)))
+    print(" ".join(map(str, output)))
 
 def get_occurrences(pattern, text):
     # this function should find the occurances using Rabin Karp alghoritm 
@@ -39,18 +39,18 @@ def get_occurrences(pattern, text):
     text_hash = 0
 
     for i in range(m_pattern):
-        patter_hash = (pattern_hash * p + ord(pattern[i])) % m
+        pattern_hash = (pattern_hash * p + ord(pattern[i])) % m
         text_hash = (text_hash * p + ord(text[i])) % m
 
     occurrences = []
 
-    for i in range(n - m_pattern +1):
+    for i in range(n - m_pattern + 1):
         if pattern_hash == text_hash:
             if pattern == text[i:i+m_pattern]:
                 occurrences.append(i)
 
         if i < n - m_pattern:
-            text_hash = ((text_hash - ord(text[i]) * p_power) * p +ord(text[i+m_pattern])) % m
+            text_hash = ((text_hash - ord(text[i]) * p_power) * p + ord(text[i+m_pattern])) % m
 
             if text_hash < 0:
                 text_hash += m
