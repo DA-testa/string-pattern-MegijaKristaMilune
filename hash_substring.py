@@ -3,36 +3,49 @@
 
 
 def read_input():
-    input_method = input()
+    izvele = input()
 
-    if 'I' in input_method:
+    if 'I' in izvele:
         pattern = input().rstrip()
-        string = input().rstrip()       
+        string = input().rstrip() 
+      
 
-    elif 'F' in input_method:
+    elif 'F' in izvele:
         with open("tests/06","r") as file:
             pattern = file.readline().rstrip()
             string = file.readline().rstrip()
+
     else: 
         print('wrong input')
+
     
     return (pattern, string)
 
+
 def print_occurrences(output):
+
     print(' '.join(map(str, output)))
 
 def get_occurrences(pattern, text):
-    pattern_len = len(pattern)
-    text_len = len(text)
-    pattern_hash = hash(pattern)
-    window_hash = hash(text[:pattern_len])
+
+    l_pattern= len(pattern)
+    l_text= len(text)
+    h_pattern = hash(pattern)
+    h_window = hash(text[:l_pattern])
+
+
     result = []
-    for i in range(text_len - pattern_len + 1):
-        if pattern_hash == window_hash:
-            if pattern == text[i:i+pattern_len]:
+
+    for i in range(l_text- l_pattern+ 1):
+        if h_pattern == h_window:
+
+            if pattern == text[i:i+l_pattern]:
                 result.append(i)
-        if i < text_len - pattern_len:
-            window_hash = (window_hash - ord(text[i])*pow(26,pattern_len-1)) * 26 + ord(text[i+pattern_len])
+
+        if i < l_text - l_pattern:
+            h_window = hash(text[i+1:i+1+l_pattern])
+
+
     return result
 
 if __name__ == '__main__':
